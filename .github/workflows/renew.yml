@@ -11,6 +11,7 @@ permissions:
 jobs:
   run-automation:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
 
     steps:
       - name: 📥 Checkout public repo
