@@ -4,13 +4,20 @@
         "expire_date": "2026-07-01",
         "days_left": 58,
         "last_points": "21.00",
-        "update_time": "2026-05-03 06:14:09"
+        "update_time": "2026-05-03 08:29:52"
     },
     "Acc_2": {
         "product": "NodeJS - NodeJS-US-P1",
         "expire_date": "2026-06-01",
         "days_left": 28,
         "last_points": "31.00",
-        "update_time": "2026-05-03 06:23:47"
+        "update_time": "2026-05-03 08:35:01"
+    },
+    "Acc_3": {
+        "product": "Python - Python-DE-P1",
+        "expire_date": "2026-06-02",
+        "days_left": 29,
+        "last_points": "2.00",
+        "update_time": "2026-05-03 08:44:42"
     }
 }
