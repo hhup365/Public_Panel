@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   run-automation:
@@ -41,11 +40,11 @@ jobs:
           pip install -r requirements.txt
           seleniumbase install chromedriver
 
-      - name: ⚙️ Setup Sing-box
+      - name: ⚙️ Setup Proxy
         run: |
-          wget -q https://github.com/SagerNet/sing-box/releases/download/v1.11.0/sing-box-1.11.0-linux-amd64.tar.gz
-          tar -xzf sing-box-1.11.0-linux-amd64.tar.gz
-          mv sing-box-1.11.0-linux-amd64/sing-box ./sing-box
+          wget -q https://github.com/SagerNet/sing-box/releases/download/v1.13.11/sing-box-1.13.11-linux-amd64.tar.gz
+          tar -xzf sing-box-1.13.11-linux-amd64.tar.gz
+          mv sing-box-1.13.11-linux-amd64/sing-box ./sing-box
           chmod +x ./sing-box
 
       - name: 🚀 Run Script
@@ -68,30 +67,4 @@ jobs:
           name: debug-screenshots
           path: screenshots/
           retention-days: 5
-
-      - name: 🧹 清理 Action 运行记录
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "🧹 开始清理所有成功的 Action 运行记录（含本次）..."
-
-          gh run list \
-            --repo ${{ github.repository }} \
-            --status success \
-            --limit 100 \
-            --json databaseId \
-            -q '.[].databaseId' | while read run_id; do
-              if [ "$run_id" != "${{ github.run_id }}" ]; then
-                echo "  🗑️ 删除历史记录: $run_id"
-                gh run delete "$run_id" --repo ${{ github.repository }}
-              fi
-          done
-
-          echo "  ⏳ 等待本次记录状态落库..."
-          sleep 10
-          echo "  🗑️ 删除本次记录: ${{ github.run_id }}"
-          gh run delete "${{ github.run_id }}" --repo ${{ github.repository }} || \
-            echo "  ⚠️ 本次记录删除失败（可忽略，下次成功时会被清理）"
-
-          echo "✅ 清理完成"
+          
