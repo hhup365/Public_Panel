@@ -1,0 +1,96 @@
+name: Panel Auto Login & Renew
+on:
+  schedule:
+    - cron: '51 23 */3 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  run-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout public repo
+        uses: actions/checkout@v4
+
+      - name: 📥 Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          repository: hhup365/Test-Panel-free-cloud
+          token: ${{ secrets.GH_PAT }}
+          path: private_repo
+
+      - name: 🔄 Merge private code into workspace
+        run: |
+          rsync -a --exclude='.git' private_repo/ ./
+          rm -rf private_repo
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb chromium-browser python3-tk python3-dev
+          pip install -r requirements.txt
+          seleniumbase install chromedriver
+
+      - name: ⚙️ Setup Sing-box
+        run: |
+          wget -q https://github.com/SagerNet/sing-box/releases/download/v1.11.0/sing-box-1.11.0-linux-amd64.tar.gz
+          tar -xzf sing-box-1.11.0-linux-amd64.tar.gz
+          mv sing-box-1.11.0-linux-amd64/sing-box ./sing-box
+          chmod +x ./sing-box
+
+      - name: 🚀 Run Script
+        env:
+          ALL_SECRETS: ${{ toJson(secrets) }}
+        run: python3 app.py
+
+      - name: 💾 Commit State File
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git diff --quiet && git diff --staged --quiet || \
+            (git commit -m "📝 Auto-update state.json [skip ci]" && git push)
+
+      - name: 📸 Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshots
+          path: screenshots/
+          retention-days: 5
+
+      - name: 🧹 清理 Action 运行记录
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "🧹 开始清理所有成功的 Action 运行记录（含本次）..."
+
+          gh run list \
+            --repo ${{ github.repository }} \
+            --status success \
+            --limit 100 \
+            --json databaseId \
+            -q '.[].databaseId' | while read run_id; do
+              if [ "$run_id" != "${{ github.run_id }}" ]; then
+                echo "  🗑️ 删除历史记录: $run_id"
+                gh run delete "$run_id" --repo ${{ github.repository }}
+              fi
+          done
+
+          echo "  ⏳ 等待本次记录状态落库..."
+          sleep 10
+          echo "  🗑️ 删除本次记录: ${{ github.run_id }}"
+          gh run delete "${{ github.run_id }}" --repo ${{ github.repository }} || \
+            echo "  ⚠️ 本次记录删除失败（可忽略，下次成功时会被清理）"
+
+          echo "✅ 清理完成"
