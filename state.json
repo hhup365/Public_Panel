@@ -2,22 +2,22 @@
     "Acc_1": {
         "product": "NodeJS - NodeJS-DE-P1",
         "expire_date": "2026-07-01",
-        "days_left": 58,
-        "last_points": "21.00",
-        "update_time": "2026-05-03 08:29:52"
+        "days_left": 57,
+        "last_points": "22.00",
+        "update_time": "2026-05-04 09:04:01"
     },
     "Acc_2": {
         "product": "NodeJS - NodeJS-US-P1",
-        "expire_date": "2026-06-01",
-        "days_left": 28,
-        "last_points": "31.00",
-        "update_time": "2026-05-03 08:35:01"
+        "expire_date": "2026-07-01",
+        "days_left": 57,
+        "last_points": "32.00",
+        "update_time": "2026-05-04 09:11:04"
     },
     "Acc_3": {
         "product": "Python - Python-DE-P1",
         "expire_date": "2026-06-02",
-        "days_left": 29,
-        "last_points": "2.00",
-        "update_time": "2026-05-03 08:44:42"
+        "days_left": 28,
+        "last_points": "未知",
+        "update_time": "2026-05-04 09:15:46"
     }
 }
