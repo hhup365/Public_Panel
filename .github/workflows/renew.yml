@@ -1,7 +1,7 @@
 name: Panel Auto Login & Renew
 on:
   schedule:
-    - cron: '25 7 */3 * *'
+    - cron: '35 13 */3 * *'
   workflow_dispatch:
 
 permissions:
