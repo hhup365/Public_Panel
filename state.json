@@ -1,16 +1,16 @@
 {
     "Acc_2": {
         "product": "Python - Python-DE-P1",
-        "expire_date": "2026-09-02",
-        "days_left": 25,
-        "last_points": "19.00",
-        "update_time": "2026-08-07 14:40:52"
+        "expire_date": "2026-10-02",
+        "days_left": 52,
+        "last_points": "16.00",
+        "update_time": "2026-08-10 14:44:43"
     },
     "Acc_1": {
         "product": "NodeJS - NodeJS-DE-P1",
-        "expire_date": "2026-09-01",
-        "days_left": 24,
-        "last_points": "未知",
-        "update_time": "2026-08-07 14:38:11"
+        "expire_date": "2026-10-01",
+        "days_left": 51,
+        "last_points": "41.00",
+        "update_time": "2026-08-10 14:42:42"
     }
 }
